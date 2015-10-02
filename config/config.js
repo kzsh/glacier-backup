@@ -6,6 +6,6 @@ module.exports = {
   },
   region: 'us-east-1',
   vaultName: "music-archive",
-  logger: null, //process.stdout,
+  logger: process.stdout,
   partSize: 1024 * 1024,
 }
