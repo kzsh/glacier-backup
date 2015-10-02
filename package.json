@@ -1,0 +1,31 @@
+{
+  "name": "glacier-backup",
+  "version": "0.0.1",
+  "description": "Glacier backup tool.",
+  "main": "main.js",
+  "dependencies": {
+    "aws-sdk": "^2.2.6",
+    "bluebird": "^2.10.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kzsh/glacier-backup.git"
+  },
+  "keywords": [
+    "glacier",
+    "aws",
+    "backup",
+    "amazon",
+    "stream"
+  ],
+  "author": "andrew@hunt.li",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kzsh/glacier-backup/issues"
+  },
+  "homepage": "https://github.com/kzsh/glacier-backup#readme"
+}
