@@ -1,5 +1,5 @@
 var crypto = require('crypto');
-var config = require('./config.js')
+var config = require('./config/config.js')
 var fs = require('fs');
 var AWS = require('aws-sdk');
 
@@ -25,15 +25,18 @@ glacier.initiateMultipartUpload(params, function (mpErr, multipart) {
     while (null !== (chunk = stream.read(config.partSize))) {
 
       console.log(chunk.length);
-      var currentBufferEnd = currentBufferIndex + chunk.length;
+      var currentBufferEnd = currentBufferIndex + chunk.length -1;
       // set params
       partParams = {
         vaultName: config.vaultName,
         uploadId: multipart.uploadId,
-        range: 'bytes ' + currentBufferIndex + '-' + (currentBufferEnd -1) + '/*',
-        body: chunk.slice(currentBufferIndex, currentBufferEnd)
+        range: 'bytes ' + currentBufferIndex  + '-' + (currentBufferEnd) + '/*',
+        body: chunk
       };
 
+      hash.update(chunk)
+
+      currentBufferIndex = currentBufferEnd + 1;
       // Send a single part
       console.log('Uploading part', currentBufferIndex, '=', partParams.range);
       glacier.uploadMultipartPart(partParams, function(multiErr, mData) {
@@ -66,9 +69,6 @@ glacier.initiateMultipartUpload(params, function (mpErr, multipart) {
           }
         });
       });
-      hash.update(chunk)
-
-      currentBufferIndex = currentBufferEnd;
     }
   });
 });
@@ -76,7 +76,6 @@ glacier.initiateMultipartUpload(params, function (mpErr, multipart) {
 function getStream() {
   return fs.createReadStream(process.argv[2], {
     flags: 'r',
-    encoding: 'utf8',
     autoClose: true
   });
 }
